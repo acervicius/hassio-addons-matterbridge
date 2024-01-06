@@ -10,7 +10,7 @@ RUN wget https://github.com/42wim/matterbridge/archive/refs/heads/${MATTERBRIDGE
 
 RUN tar xzf ${MATTERBRIDGE_VERSION}.tar.gz
 RUN rm ${MATTERBRIDGE_VERSION}.tar.gz
-RUN cd /matterbridge-{MATTERBRIDGE_VERSION} \
+RUN cd /matterbridge-${MATTERBRIDGE_VERSION} \
   && CGO_ENABLED=0 go build -tags whatsappmulti -mod vendor -ldflags "-X github.com/42wim/matterbridge/version.GitHash=$(git log --pretty=format:'%h' -n 1)" -o /bin/matterbridge
 
 FROM ${BUILD_FROM}
