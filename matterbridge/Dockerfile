@@ -3,13 +3,14 @@ ARG BUILD_FROM=ghcr.io/hassio-addons/base:15.0.3
 FROM ${BUILD_FROM} AS builder
 
 RUN apk --no-cache add wget go git tar
-ARG MATTERBRIDGE_VERSION="v1.26.0"
+# ARG MATTERBRIDGE_VERSION="v1.26.1"
+ARG MATTERBRIDGE_VERSION="master"
 
-RUN wget https://github.com/42wim/matterbridge/archive/refs/tags/${MATTERBRIDGE_VERSION}.tar.gz
+RUN wget https://github.com/42wim/matterbridge/archive/refs/heads/${MATTERBRIDGE_VERSION}.tar.gz
 
-RUN tar xzf ${MATTERBRIDGE_VERSION}.tar.gz
+RUN tar xzf matterbridge-${MATTERBRIDGE_VERSION}.tar.gz
 RUN rm ${MATTERBRIDGE_VERSION}.tar.gz
-RUN cd /matterbridge-1.26.0 \
+RUN cd /matterbridge-{MATTERBRIDGE_VERSION} \
   && CGO_ENABLED=0 go build -tags whatsappmulti -mod vendor -ldflags "-X github.com/42wim/matterbridge/version.GitHash=$(git log --pretty=format:'%h' -n 1)" -o /bin/matterbridge
 
 FROM ${BUILD_FROM}
